@@ -1,5 +1,5 @@
 """
-tclient.request
+tclient.test
 ~~~~~~~~
 
 This module provides tools helpful for testing with tclient
@@ -10,10 +10,12 @@ This module provides tools helpful for testing with tclient
 """
 
 import logging
+import re
 import json
+import urlparse
 
 import tornado.httpclient
-from . import fetch
+from . import core
 
 
 log = logging.getLogger(__name__)
@@ -23,15 +25,15 @@ DEFAULT_HEADERS = {'Content-Type': 'application/json'}
 
 def get_test_client():
     """Install and return mock http client"""
-    if fetch._CLIENT is None:
-        fetch._CLIENT = MockClient()
+    if core._CLIENT is None:
+        core._CLIENT = MockClient()
 
-    return fetch._CLIENT
+    return core._CLIENT
 
 
 def clear_test_client():
     """Clean any installed test clients"""
-    fetch._CLIENT = None
+    core._CLIENT = None
 
 
 class MockClient(object):
@@ -51,7 +53,7 @@ class MockClient(object):
         self.routes = []
 
     def build_response(self, request, code=200, error=None, headers=None):
-        if headers == None:
+        if headers is None:
             headers = DEFAULT_HEADERS
 
         resp = tornado.httpclient.HTTPResponse(
@@ -60,7 +62,8 @@ class MockClient(object):
 
     def fetch(self, request, **kwargs):
         for reg, callback in self.routes:
-            if reg.match(str(request.furl.path)):
+            path = urlparse.urlparse(request.url).path
+            if reg.match(path):
                 response_data = callback(request)
 
                 if isinstance(response_data, str):
@@ -82,7 +85,12 @@ class MockClient(object):
             response = self.build_response(request, code=404)
 
         if 'callback' in kwargs:
-            kwargs['callback'](response)
+            if response is None:
+                log.warning("No response, somebody else must call callback")
+                return None
+            else:
+                kwargs['callback'](response)
+                return None
         else:
             return response
 

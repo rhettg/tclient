@@ -37,8 +37,7 @@ In summary:
 
 
     for r in (resp1, resp2, resp3):
-        if r.code != 200:
-            raise Exception('noooo')
+        r.rethrow()
 
     print resp1.json['results']
 

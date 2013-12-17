@@ -13,7 +13,7 @@ that are also useful for external consumption.
 """
 
 
-def segment_requests(requests, max_bytes, max_length):
+def segment_requests(requests, max_bytes=None, max_length=None):
     """Split up requests so that no chunk is larger than the specified size
 
     Args:
@@ -33,7 +33,8 @@ def segment_requests(requests, max_bytes, max_length):
         current_bytes += req.body and len(req.body) or 0
         current_chunk.append(req)
 
-        if current_bytes > max_bytes or len(current_chunk) >= max_length:
+        if (max_bytes is not None and current_bytes > max_bytes) \
+                or (max_length is not None and len(current_chunk) >= max_length):
             current_bytes = 0
             out_chunks.append(current_chunk)
             current_chunk = []

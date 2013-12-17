@@ -21,6 +21,8 @@ try:
 except ImportError:
     blueox = None
 
+from .response import Response
+
 
 log = logging.getLogger(__name__)
 
@@ -80,7 +82,7 @@ def fetch_all(requests, timeout=None, retries=0):
 
             return
 
-        responses[request_ndx] = response
+        responses[request_ndx] = Response.from_response(response)
         if all(responses):
             log.debug("Collected all responses, exiting...")
             loop.stop()
@@ -108,6 +110,7 @@ def fetch_all(requests, timeout=None, retries=0):
     # Cleanup
     if timeout_req is not None:
         loop.remove_timeout(timeout_req)
+
     client.close()
     loop.close()
 

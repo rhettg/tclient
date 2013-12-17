@@ -50,9 +50,9 @@ class Request(tornado.httpclient.HTTPRequest):
         if 'body' in kwargs:
             body = kwargs.pop('body')
 
-        self.base_url = url
-
         super(Request, self).__init__(None, **kwargs)
+
+        self.url = url
 
         if body is not None:
             self.body = body
@@ -61,7 +61,7 @@ class Request(tornado.httpclient.HTTPRequest):
         self._form = None
 
     def get_url(self):
-        url = self.base_url
+        url = self._url_base
 
         # Note we use this as a hook for doing extra 'pre-render' type operations
         if self.params:
@@ -81,7 +81,7 @@ class Request(tornado.httpclient.HTTPRequest):
 
     @url.setter
     def url(self, value):
-        self.url_base = value
+        self._url_base = value
 
     @property
     def body(self):
