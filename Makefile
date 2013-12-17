@@ -1,17 +1,11 @@
-.PHONY: all pep8 pyflakes clean dev
+.PHONY: all flake8 clean dev
 
 GITIGNORES=$(shell cat .gitignore |tr "\\n" ",")
 
-all: pep8
+all: flake8
 
-pep8: .gitignore env
-	@bin/virtual-env-exec pep8 . --exclude=$(GITIGNORES)
-
-pyflakes: env
-	@bin/virtual-env-exec pyflakes tclient tests
-
-pylint: env
-	@bin/virtual-env-exec pylint tclient 2>&1 |less
+flake8: .gitignore env
+	@bin/virtual-env-exec flake8 . --exclude=$(GITIGNORES)
 
 dev: env env/.pip
 

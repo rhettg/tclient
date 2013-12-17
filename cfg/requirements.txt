@@ -1,6 +1,5 @@
 testify
-pep8
-pyflakes
+flake8
 ipython
-pylint
 tornado
+urllib3

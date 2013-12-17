@@ -17,3 +17,11 @@ __build__ = 0
 __author__ = 'Rhett Garber'
 __license__ = 'ISC'
 __copyright__ = 'Copyright 2013 Rhett Garber'
+
+
+from .fetch import fetch_all
+from .fetch import fetch
+from .request import Request
+from .util import segment_requests
+
+# flake8: noqa

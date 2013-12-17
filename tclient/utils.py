@@ -1,31 +1,44 @@
 # -*- coding: utf-8 -*-
 
 """
-tclient.util
+tclient.utils
 ~~~~~~~~
 
 This module provides utility functions that are used within Tclient
 that are also useful for external consumption.
 
-:copyright: (c) 2012 by Firstname Lastname.
+:copyright: (c) 2013 by Rhett Garber.
 :license: ISC, see LICENSE for more details.
 
 """
 
 
-def black():
-    """The world is black."""
+def segment_requests(requests, max_bytes, max_length):
+    """Split up requests so that no chunk is larger than the specified size
 
-    return [True, True, True, True]
+    Args:
+        requests - list of requests to split up
+        max_bytes - Maximum size for any segment of requests
+        max_length - Maximum number of requests for any segment
+    """
 
+    out_chunks = []
+    requests_queue = requests[:]
 
-def white():
-    """The world is white."""
+    current_bytes = 0
+    current_chunk = []
+    while requests_queue:
+        req = requests_queue.pop(0)
 
-    return [False, False, False, False]
+        current_bytes += req.body and len(req.body) or 0
+        current_chunk.append(req)
 
+        if current_bytes > max_bytes or len(current_chunk) >= max_length:
+            current_bytes = 0
+            out_chunks.append(current_chunk)
+            current_chunk = []
+    else:
+        if current_chunk:
+            out_chunks.append(current_chunk)
 
-def gray():
-    """The world is gray."""
-
-    return [False, True, False, True]
+    return out_chunks
