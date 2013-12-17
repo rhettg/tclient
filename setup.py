@@ -22,7 +22,7 @@ setup(
     long_description=open('README.md').read(),
     author=get_init_val('author'),
     url=get_init_val('url'),
-    package_data={'': ['LICENSE', 'NOTICE']},
+    package_data={'': ['LICENSE', 'README.md']},
     license=get_init_val('license'),
     packages=PACKAGES
 )
