@@ -90,3 +90,5 @@ Run's `testify` to execute all the tests.
 Check pep8 and flake the source code.
 
 Make your change, send me a PR.
+
+The project layout is based on [py-bootstrap](https://github.com/splaice/py-bootstrap)
