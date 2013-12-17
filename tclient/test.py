@@ -11,14 +11,27 @@ This module provides tools helpful for testing with tclient
 
 import logging
 import json
-import re
 
 import tornado.httpclient
+from . import fetch
 
 
 log = logging.getLogger(__name__)
 
 DEFAULT_HEADERS = {'Content-Type': 'application/json'}
+
+
+def get_test_client():
+    """Install and return mock http client"""
+    if fetch._CLIENT is None:
+        fetch._CLIENT = MockClient()
+
+    return fetch._CLIENT
+
+
+def clear_test_client():
+    """Clean any installed test clients"""
+    fetch._CLIENT = None
 
 
 class MockClient(object):
@@ -38,7 +51,7 @@ class MockClient(object):
         self.routes = []
 
     def build_response(self, request, code=200, error=None, headers=None):
-        if headers is None:
+        if headers == None:
             headers = DEFAULT_HEADERS
 
         resp = tornado.httpclient.HTTPResponse(
