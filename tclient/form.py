@@ -14,7 +14,10 @@ import urllib
 try:
     import urllib3
 except ImportError:
-    from requests.packages import urllib3
+    try:
+        from requests.packages import urllib3
+    except ImportError:
+        urllib3 = None
 
 
 class Form(dict):
@@ -28,6 +31,9 @@ class Form(dict):
         self._files = []
 
     def add_file(self, file_name, file_object):
+        if urllib3 is None:
+            raise NotImplementedError
+
         self._files.append((file_name, file_object))
 
     def get_value(self, content_type=None):
