@@ -19,10 +19,14 @@ setup(
     name=get_init_val('title'),
     version=get_init_val('version'),
     description=get_init_val('description'),
-    long_description=open('README.md').read(),
+    long_description=open('README').read(),
+    classifiers=["Topic :: Internet :: WWW/HTTP"],
     author=get_init_val('author'),
+    author_email=get_init_val('author_email'),
     url=get_init_val('url'),
-    package_data={'': ['LICENSE', 'README.md']},
+    package_data={'': ['../LICENSE', '../README', '../README.md']},
+    include_package_data=True,
     license=get_init_val('license'),
-    packages=PACKAGES
+    packages=PACKAGES,
+    requires=['tornado']
 )
