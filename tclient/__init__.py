@@ -10,7 +10,7 @@ tclient
 """
 
 __title__ = 'tclient'
-__version__ = '0.0.3'
+__version__ = '0.0.4'
 __description__ = 'HTTP client for parallel http requests'
 __url__ = 'https://github.com/rhettg/tclient'
 __build__ = 0

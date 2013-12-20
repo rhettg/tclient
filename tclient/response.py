@@ -20,5 +20,4 @@ class Response(httpclient.HTTPResponse):
                         effective_url=response.effective_url,
                         error=response.error,
                         request_time=response.request_time,
-                        time_info=response.time_info,
-                        reason=response.reason)
+                        time_info=response.time_info)
